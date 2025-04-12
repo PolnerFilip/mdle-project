@@ -1,9 +1,5 @@
-required_packages <- c("dplyr", "tidyr", "tools", "lubridate")
-
-for (pkg in required_packages) {
-  if (!requireNamespace(pkg, quietly = TRUE)) install.packages(pkg)
-  library(pkg, character.only = TRUE)
-}
+source("./shared.R")
+load_required_packages()
 
 # Check and import the datasets
 file_paths <- list.files("data/raw", pattern = "\\.csv$", full.names = TRUE)
@@ -59,16 +55,15 @@ weather_df$Date <- ymd(weather_df$Date)
 weather_forecast_df$Date <- ymd(weather_forecast_df$Date)
 vegetation_df$Date <- dmy(vegetation_df$Date)
 
-head(wildfires_df)
-head(weather_df)
-head(weather_forecast_df)
-head(vegetation_df)
-
 # Merge datasets
 merged_df <- wildfires_df %>%
   left_join(weather_df, by = c("Region", "Date")) %>%
   left_join(weather_forecast_df, by = c("Region", "Date")) %>%
   left_join(vegetation_df, by = c("Region", "Date"))
+
+# Use data from 2014 onwards, since weather forecast data starts then
+merged_df <- merged_df %>%
+  filter(as.Date(Date) >= as.Date("2014-01-01"))
 
 # Export csv
 if (!dir.exists("data/merged")) {
