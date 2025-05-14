@@ -1,12 +1,9 @@
 source("./shared.R")
 load_required_packages()
 
-for (pkg in required_packages) {
-  if (!requireNamespace(pkg, quietly = TRUE)) install.packages(pkg)
-  library(pkg, character.only = TRUE)
-}
+df <- read.csv("data/merged/merged_data.csv")
 
-numeric_cols <- names(df)[sapply(df_clean, is.numeric)]
+numeric_cols <- names(df)[sapply(df, is.numeric)]
 
 for (col in numeric_cols) {
   print(

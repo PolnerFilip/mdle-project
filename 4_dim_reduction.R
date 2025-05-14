@@ -1,9 +1,6 @@
 # Install necessary packages
-install.packages("randomForest")
-library(tidyverse)
-library(randomForest)
-library(corrplot)
-library(caret)
+source("./shared.R")
+load_required_packages()
 
 # Load the data
 df <- read.csv("data/processed/scaled_data.csv")
