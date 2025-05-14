@@ -36,9 +36,10 @@ ggplot(df, aes(x = Estimated_fire_area)) +
   geom_histogram(bins = 50, fill = "skyblue", color = "black") +
   labs(title = "Distribution of Estimated Fire Area", x = "Estimated Fire Area")
 
+
 # Create a long format data for the top 10 correlated features for boxplot
 df_long <- df %>% 
-  select(all_of(top_10)) %>%
+  select(all_of(top_features)) %>%
   pivot_longer(cols = everything(), names_to = "Variable", values_to = "Value")
 
 # Plot boxplots for the top 10 correlated features
